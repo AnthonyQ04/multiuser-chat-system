@@ -1,0 +1,157 @@
+====================================================
+Chat Application Protocol
+Written by: Anthony Quintero
+Date: April 2026
+====================================================
+
+OVERVIEW
+--------
+This is the protocol I designed for my multiuser chat system.
+The idea is simple - clients connect to a server, log in, and
+can send private messages to other logged in users or broadcast
+to everyone at once. Everything runs over TCP because I need
+reliable delivery for chat messages. The server runs on port
+5000 which I opened in the firewall using UFW on my Ubuntu
+Server VM.
+
+TRANSPORT
+---------
+Protocol:        TCP
+Port:            5000
+Message Format:  Plain text, UTF-8 encoded
+Max Message:     1024 bytes per transmission
+
+HOW A CONNECTION WORKS
+-----------------------
+When a client connects the server walks them through a login
+before anything else can happen. Here is the order:
+
+  1. Client connects to server on port 5000
+  2. Server asks for username
+  3. Client sends username
+  4. Server asks for password
+  5. Client sends password
+  6. Server checks credentials against users.txt
+     - If correct: server sends welcome message, chat begins
+     - If wrong: server sends failure message, connection closed
+
+MESSAGES THE SERVER SENDS TO THE CLIENT
+-----------------------------------------
+
+Username prompt
+  "Enter username: "
+  Sent right when the client connects
+
+Password prompt
+  "Enter password: "
+  Sent after the username is received
+
+Welcome message (login success)
+  "Welcome <username>! Type 'list' to see online users."
+  Sent when login is successful
+
+Login failure
+  "Authentication failed. Disconnecting."
+  Sent when the username or password is wrong, then connection closes
+
+Incoming private message
+  "[<sender>]: <message>"
+  This is how the server delivers a private message from one user to another
+  Example: "[bob]: hey whats up"
+
+Incoming broadcast message
+  "[<sender> -> everyone]: <message>"
+  This is how the server delivers a broadcast message sent to all users
+  Example: "[ant -> everyone]: hey everyone!"
+
+Message confirmation (private)
+  "Message sent to <username>"
+  Sent back to the sender so they know their private message went through
+
+Message confirmation (broadcast)
+  "Message sent to everyone."
+  Sent back to the sender so they know their broadcast went through
+
+Online users list
+  "Online users: <user1>, <user2>, ..."
+  Sent in response to the list command
+
+User not online
+  "User <username> is not online."
+  Sent when someone tries to message a user who isnt connected
+
+Wrong command
+  "Usage: @username message | @all message | list"
+  Sent when the client types something the server doesnt understand
+
+MESSAGES THE CLIENT SENDS TO THE SERVER
+-----------------------------------------
+
+Username
+  Just the username as plain text
+  Sent in response to the username prompt
+
+Password
+  Just the password as plain text
+  Sent in response to the password prompt
+
+Private message
+  Format: @<username> <message>
+  Sends a message to one specific user
+  Example: "@bob hey its ant"
+
+Broadcast message
+  Format: @all <message>
+  Sends a message to every user currently connected except yourself
+  Example: "@all hey everyone its ant"
+
+List command
+  "list"
+  Sends this to get a list of everyone currently online
+
+SERVER LOGGING
+--------------
+I added logging to the server so every important event gets
+saved to server.log with a timestamp. This way I can look back
+and see exactly what happened and when. The log tracks:
+
+  - When the server started
+  - Every new connection
+  - Successful and failed logins
+  - When someone requests the user list
+  - Every private message sent between users
+  - Every broadcast message sent
+  - When someone disconnects
+
+Log format example:
+2026-04-21 04:19:20,974 - INFO - ant logged in from ('127.0.0.1', 44656)
+
+EXAMPLE SESSION
+---------------
+This is what a full session looks like with both private and broadcast messaging:
+
+  Client connects to 192.168.64.4 port 5000
+  Server: "Enter username: "
+  Client types: ant
+  Server: "Enter password: "
+  Client types: 1234
+  Server: "Welcome ant! Type 'list' to see online users."
+  Client types: list
+  Server: "Online users: ant, bob, charlie"
+  Client types: @bob hey bob its ant
+  Server: "Message sent to bob"
+  Bob sees: "[ant]: hey bob its ant"
+  Client types: @all hey everyone
+  Server: "Message sent to everyone."
+  Bob sees: "[ant -> everyone]: hey everyone"
+  Charlie sees: "[ant -> everyone]: hey everyone"
+
+ERROR HANDLING
+--------------
+  - Wrong login: connection gets closed right away
+  - Messaging someone offline: sender gets notified, stays connected
+  - Broadcast with one bad connection: skips that client, continues to others
+  - Socket errors: that clients thread exits, they get removed from the list
+  - Bad commands: server sends usage instructions back
+
+====================================================

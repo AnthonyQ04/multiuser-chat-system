@@ -1,0 +1,37 @@
+2026-04-21 04:18:27,250 - INFO - Server started on port 5000
+2026-04-21 04:19:17,290 - INFO - New connection from ('127.0.0.1', 44656)
+2026-04-21 04:19:20,974 - INFO - ant logged in from ('127.0.0.1', 44656)
+2026-04-21 04:19:23,758 - INFO - New connection from ('127.0.0.1', 57784)
+2026-04-21 04:19:34,659 - INFO - charlie logged in from ('127.0.0.1', 57784)
+2026-04-21 04:20:25,703 - INFO - ant requested user list
+2026-04-21 04:20:37,091 - INFO - ant sent message to charlie
+2026-04-21 04:20:55,888 - INFO - charlie sent message to ant
+2026-04-21 04:32:52,972 - INFO - Server started on port 5000
+2026-04-21 04:33:28,504 - INFO - New connection from ('127.0.0.1', 57246)
+2026-04-21 04:33:35,020 - INFO - ant logged in from ('127.0.0.1', 57246)
+2026-04-21 04:33:49,116 - INFO - New connection from ('127.0.0.1', 46188)
+2026-04-21 04:33:56,097 - INFO - bob logged in from ('127.0.0.1', 46188)
+2026-04-21 04:34:04,588 - INFO - New connection from ('127.0.0.1', 38564)
+2026-04-21 04:34:08,407 - INFO - charlie logged in from ('127.0.0.1', 38564)
+2026-04-21 04:34:11,930 - INFO - ant checked who is online
+2026-04-21 04:34:15,651 - INFO - bob checked who is online
+2026-04-21 04:34:19,078 - INFO - charlie checked who is online
+2026-04-21 04:34:52,492 - INFO - ant messaged bob
+2026-04-21 04:35:28,130 - INFO - ant disconnected
+2026-04-21 04:35:37,154 - INFO - bob disconnected
+2026-04-21 04:35:43,841 - INFO - charlie disconnected
+2026-04-21 04:38:21,837 - INFO - Server started on port 5000
+2026-04-21 04:39:48,448 - INFO - New connection from ('127.0.0.1', 48316)
+2026-04-21 04:39:53,116 - INFO - ant logged in from ('127.0.0.1', 48316)
+2026-04-21 04:39:56,113 - INFO - New connection from ('127.0.0.1', 41598)
+2026-04-21 04:40:00,215 - INFO - bob logged in from ('127.0.0.1', 41598)
+2026-04-21 04:40:06,447 - INFO - New connection from ('127.0.0.1', 43202)
+2026-04-21 04:40:10,576 - INFO - charlie logged in from ('127.0.0.1', 43202)
+2026-04-21 04:40:14,895 - INFO - ant checked who is online
+2026-04-21 04:40:18,029 - INFO - bob checked who is online
+2026-04-21 04:40:20,984 - INFO - charlie checked who is online
+2026-04-21 04:40:46,578 - INFO - ant messaged bob
+2026-04-21 04:41:05,278 - INFO - bob sent a broadcast message
+2026-04-21 05:08:51,635 - INFO - charlie disconnected
+2026-04-21 05:08:56,241 - INFO - bob disconnected
+2026-04-21 05:09:03,859 - INFO - ant disconnected
